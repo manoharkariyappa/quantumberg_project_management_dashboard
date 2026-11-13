@@ -1,0 +1,625 @@
+@import "tailwindcss";
+
+/*
+ * Quantumberg Project Management Dashboard
+ * Quantumberg theme: purple -> pink gradients on white qb-cards,
+ * matching the Quantumberg accounting dashboard design system.
+ */
+
+@theme {
+  --color-qb-purple: #493b91;
+  --color-qb-purple-dark: #40347f;
+  --color-qb-pink: #c43f9d;
+  --color-qb-primary: #6040c5;
+  --color-qb-blue: #3987f5;
+  --color-qb-green: #20bf88;
+  --color-qb-orange: #ffad19;
+  --color-qb-red: #e5484d;
+  --color-qb-teal: #0f9f8f;
+  --color-qb-bg: #f4f6fc;
+  --color-qb-card: #ffffff;
+  --color-qb-border: #e1e6f2;
+  --color-qb-text: var(--text-color, #333333);
+  --color-qb-muted: var(--text-muted, #78809b);
+}
+
+/* Standalone Vite development page only */
+html,
+body,
+#app {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Dashboard typography scoped to the mount roots */
+#quantumberg-project-management-dashboard-root,
+#app {
+  color: var(--text-color, #333333);
+  font-family: var(--font-stack, inherit);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#quantumberg-project-management-dashboard-root h1,
+#quantumberg-project-management-dashboard-root h2,
+#quantumberg-project-management-dashboard-root h3,
+#quantumberg-project-management-dashboard-root h4,
+#quantumberg-project-management-dashboard-root p,
+#app h1,
+#app h2,
+#app h3,
+#app h4,
+#app p {
+  font-family: inherit;
+}
+
+#quantumberg-project-management-dashboard-root h1,
+#app h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -0.3px;
+}
+
+#quantumberg-project-management-dashboard-root h2,
+#app h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+#quantumberg-project-management-dashboard-root h3,
+#app h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Quantumberg card */
+.qb-card {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, #e1e6f2);
+  border-radius: 12px;
+  box-shadow: 0 2px 9px rgb(31 41 55 / 5%);
+  transition: box-shadow 0.18s ease;
+}
+
+.qb-card:hover {
+  box-shadow: 0 8px 22px rgb(31 41 55 / 8%);
+}
+
+/* Scrollable report cards */
+.table-card {
+  height: 100%;
+}
+
+.table-card > .table-card-header,
+.table-card > .table-toolbar,
+.table-card > .summary-grid {
+  flex-shrink: 0;
+}
+
+.table-card .table-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+.table-scroll .qb-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  box-shadow: inset 0 -1px 0 var(--border-color, #edf0f7);
+}
+
+.table-scroll,
+.deadline-list,
+.health-list,
+.workload-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #c9c1e8 transparent;
+  scrollbar-gutter: stable;
+}
+
+.table-scroll::-webkit-scrollbar,
+.deadline-list::-webkit-scrollbar,
+.health-list::-webkit-scrollbar,
+.workload-list::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.table-scroll::-webkit-scrollbar-track,
+.deadline-list::-webkit-scrollbar-track,
+.health-list::-webkit-scrollbar-track,
+.workload-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-scroll::-webkit-scrollbar-thumb,
+.deadline-list::-webkit-scrollbar-thumb,
+.health-list::-webkit-scrollbar-thumb,
+.workload-list::-webkit-scrollbar-thumb {
+  background: #cfc9e8;
+  border-radius: 999px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb:hover,
+.deadline-list::-webkit-scrollbar-thumb:hover,
+.health-list::-webkit-scrollbar-thumb:hover,
+.workload-list::-webkit-scrollbar-thumb:hover {
+  background: #a99ed6;
+}
+
+.table-scroll::-webkit-scrollbar-corner,
+.deadline-list::-webkit-scrollbar-corner,
+.health-list::-webkit-scrollbar-corner,
+.workload-list::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Dashboard grid layout */
+.dashboard-grid {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  margin-top: 10px;
+}
+
+.dashboard-grid--kpis {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.dashboard-grid--charts {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dashboard-grid--charts > .chart-span-full {
+  grid-column: 1 / -1;
+}
+
+.dashboard-grid--charts > .chart-span-2 {
+  grid-column: span 2;
+}
+
+.dashboard-grid--tables {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dashboard-grid--tables.dashboard-grid--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.dashboard-section {
+  min-width: 0;
+  margin-top: 10px;
+}
+
+/* Links and buttons */
+.dashboard-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  color: #6040c5;
+  font-size: 12px;
+  font-weight: 600;
+  background: transparent;
+  border: 0;
+  white-space: nowrap;
+}
+
+.dashboard-link:hover {
+  color: #493b91;
+  text-decoration: underline;
+}
+
+.dashboard-button {
+  display: inline-flex;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 11px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: linear-gradient(90deg, #493b91, #c43f9d);
+  border: 0;
+  border-radius: 7px;
+}
+
+.dashboard-button:hover {
+  opacity: 0.92;
+}
+
+.dashboard-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.dashboard-button--secondary {
+  color: var(--text-color, #333333);
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, #e1e6f2);
+}
+
+.dashboard-button--secondary:hover {
+  color: #493b91;
+  border-color: #c4b8ef;
+  opacity: 1;
+}
+
+/* Error banner */
+.error-banner {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  margin-top: 12px;
+  color: #9f1239;
+  font-size: 12px;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 10px;
+}
+
+.error-banner button {
+  padding: 5px 11px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  background: #e11d48;
+  border: 0;
+  border-radius: 6px;
+}
+
+/* Empty states */
+.empty-state {
+  display: flex;
+  min-height: 110px;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  color: var(--text-muted, #78809b);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* Skeleton shimmer */
+.skeleton-block {
+  position: relative;
+  overflow: hidden;
+  background: var(--subtle-fg, #eef1f8);
+  border-radius: 7px;
+}
+
+.skeleton-block::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 55%),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: qb-shimmer 1.4s infinite;
+}
+
+@keyframes qb-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Footer */
+.dashboard-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 2px 2px;
+  color: var(--text-muted, #78809b);
+  font-size: 11px;
+}
+
+/* Responsive grid */
+@media (max-width: 1280px) {
+  .dashboard-grid--charts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-grid--charts > .chart-span-full,
+  .dashboard-grid--charts > .chart-span-2 {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 1100px) {
+  .dashboard-grid--kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-grid--charts,
+  .dashboard-grid--tables {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-grid--kpis {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dashboard-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ============================================================
+   Glass theme: header (purple -> pink) + all four KPI cards
+   All KPI cards use the Quantumberg purple -> pink glass look.
+   All other cards keep the default white styling.
+   ============================================================ */
+
+/* Header (Quantumberg glass) --------------------------------- */
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-header.qb-card {
+  color: #ffffff;
+  background:
+    radial-gradient(900px 260px at 100% -40%, rgb(255 255 255 / 18%), transparent 60%),
+    radial-gradient(720px 260px at 0% -60%, rgb(237 233 254 / 24%), transparent 62%),
+    linear-gradient(120deg, #493b91 0%, #7a3f9f 52%, #c43f9d 100%);
+  border: 1px solid rgb(255 255 255 / 22%);
+  box-shadow:
+    0 16px 38px rgb(73 59 145 / 26%),
+    inset 0 1px 0 rgb(255 255 255 / 24%);
+  backdrop-filter: blur(6px);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-header::before {
+  background: linear-gradient(180deg, rgb(255 255 255 / 95%), rgb(255 255 255 / 20%));
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-header-title h1 {
+  color: #ffffff;
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-header-title p,
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-role {
+  color: rgb(255 255 255 / 78%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-header-icon {
+  background: rgb(255 255 255 / 18%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 25%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-header .dashboard-control {
+  color: rgb(255 255 255 / 80%);
+  background: rgb(255 255 255 / 14%);
+  border: 1px solid rgb(255 255 255 / 26%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-header .dashboard-control input {
+  color: #ffffff;
+  color-scheme: dark;
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-header .dashboard-control-icon {
+  color: #ffffff;
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-presets {
+  background: rgb(255 255 255 / 12%);
+  border: 1px solid rgb(255 255 255 / 22%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-preset {
+  color: rgb(255 255 255 / 78%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-preset:hover {
+  color: #ffffff;
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-preset.is-active {
+  color: #493b91;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 18%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-button {
+  color: #493b91;
+  background: linear-gradient(180deg, #ffffff, #f3eefe);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 18%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-button:hover {
+  opacity: 1;
+  background: linear-gradient(180deg, #ffffff, #faf5ff);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-button--secondary {
+  color: #ffffff;
+  background: rgb(255 255 255 / 16%);
+  border: 1px solid rgb(255 255 255 / 34%);
+  box-shadow: none;
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-button--secondary:hover {
+  color: #ffffff;
+  background: rgb(255 255 255 / 24%);
+  border-color: rgb(255 255 255 / 50%);
+}
+
+/* KPI cards: shared glass text/icon styling ------------------ */
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card {
+  color: #ffffff;
+  border: 1px solid rgb(255 255 255 / 22%);
+  box-shadow:
+    0 14px 32px rgb(73 59 145 / 24%),
+    inset 0 1px 0 rgb(255 255 255 / 24%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card:hover {
+  border-color: rgb(255 255 255 / 34%);
+  box-shadow:
+    0 18px 40px rgb(73 59 145 / 32%),
+    inset 0 1px 0 rgb(255 255 255 / 28%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card .kpi-title {
+  color: rgb(255 255 255 / 80%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card .kpi-value {
+  color: #ffffff;
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card .kpi-description {
+  color: rgb(255 255 255 / 76%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card .kpi-icon {
+  color: #ffffff;
+  background: rgb(255 255 255 / 18%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 22%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card .kpi-icon-purple,
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card .kpi-icon-blue,
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card .kpi-icon-green,
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card .kpi-icon-orange,
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card .kpi-icon-red,
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card .kpi-icon-teal {
+  color: #ffffff;
+  background: rgb(255 255 255 / 18%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card .kpi-bottom-border {
+  background: linear-gradient(90deg, rgb(255 255 255 / 90%), rgb(255 255 255 / 35%));
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card .skeleton-block {
+  background: rgb(255 255 255 / 22%);
+}
+
+/* KPI cards 1-2: Quantumberg purple -> pink glass -------------- */
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card:nth-child(1),
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card:nth-child(2) {
+  background:
+    radial-gradient(620px 220px at 100% -25%, rgb(255 255 255 / 20%), transparent 62%),
+    linear-gradient(140deg, #493b91 0%, #6d3f9e 46%, #c43f9d 100%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card:nth-child(1):hover,
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card:nth-child(2):hover {
+  box-shadow:
+    0 18px 40px rgb(73 59 145 / 34%),
+    inset 0 1px 0 rgb(255 255 255 / 28%);
+}
+
+/* KPI cards 3-4: Quantumberg purple -> pink glass -------------- */
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card:nth-child(3),
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card:nth-child(4) {
+  background:
+    radial-gradient(620px 220px at 100% -25%, rgb(255 255 255 / 20%), transparent 62%),
+    linear-gradient(140deg, #493b91 0%, #6d3f9e 46%, #c43f9d 100%);
+  box-shadow:
+    0 14px 32px rgb(73 59 145 / 26%),
+    inset 0 1px 0 rgb(255 255 255 / 24%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card:nth-child(3):hover,
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid--kpis > .kpi-card:nth-child(4):hover {
+  box-shadow:
+    0 18px 40px rgb(73 59 145 / 34%),
+    inset 0 1px 0 rgb(255 255 255 / 28%);
+}
+
+/* ============================================================
+   Polished accents for the remaining (white) chart & table cards
+   ============================================================ */
+
+:is(#quantumberg-project-management-dashboard-root, #app) {
+  min-height: 100vh;
+  background:
+    radial-gradient(900px 420px at 100% -10%, #f3ecff 0%, transparent 60%),
+    radial-gradient(760px 420px at 0% 0%, #fbeff8 0%, transparent 55%),
+    linear-gradient(180deg, #f8f7fd 0%, #fdfcff 55%, #f8f6fc 100%);
+  background-attachment: fixed;
+}
+
+/* Top gradient accent + refined elevation for chart/table cards */
+:is(#quantumberg-project-management-dashboard-root, #app) .qb-card:not(.kpi-card):not(.dashboard-header) {
+  position: relative;
+  border-color: #e6e2f3;
+  box-shadow: 0 4px 16px rgb(73 59 145 / 6%);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .qb-card:not(.kpi-card):not(.dashboard-header)::before {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 2;
+  height: 3px;
+  content: "";
+  background: linear-gradient(90deg, #493b91, #c43f9d);
+  border-radius: 12px 12px 0 0;
+  pointer-events: none;
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .qb-card:not(.kpi-card):not(.dashboard-header):hover {
+  border-color: #d9d1ef;
+  box-shadow: 0 12px 28px rgb(73 59 145 / 10%);
+}
+
+/* Soft tinted card headers + table header rows */
+:is(#quantumberg-project-management-dashboard-root, #app) .qb-card:not(.kpi-card):not(.dashboard-header) .table-card-header,
+:is(#quantumberg-project-management-dashboard-root, #app) .qb-card:not(.kpi-card):not(.dashboard-header) .chart-card-header {
+  background: linear-gradient(180deg, #faf8ff, #ffffff);
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .qb-card:not(.kpi-card):not(.dashboard-header) .qb-table th {
+  color: #5f5781;
+  background: #f6f4fd;
+}
+
+/* Slightly roomier grid */
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-grid {
+  gap: 12px;
+}
+
+:is(#quantumberg-project-management-dashboard-root, #app) .dashboard-section {
+  margin-top: 12px;
+}
